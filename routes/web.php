@@ -7,10 +7,24 @@ use App\Http\Controllers\HostController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\UserController;
 
+/**
+ * Routes cho giao diện người dùng
+ */
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('user.pages.home');
+})->name('home');
 
+Route::get('/rooms', function () {
+    return view('user.pages.rooms');
+})->name('rooms');
+
+Route::get('/contact', function () {
+    return view('user.pages.contact');
+})->name('contact');
+
+/**
+ * Routes cho dashboard và xác thực
+ */
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -22,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+/**
+ * Routes cho quản trị viên (Admin)
+ */
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('hosts', HostController::class);
     Route::resource('schools', SchoolController::class);

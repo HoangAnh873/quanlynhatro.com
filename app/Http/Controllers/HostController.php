@@ -14,6 +14,11 @@ class HostController extends Controller
         $this->middleware('auth');
     }
 
+    public function dashboard()
+    {
+        return view('hosts.dashboard'); 
+    }
+
     // Hiển thị danh sách tất cả chủ trọ
     public function index()
     {
