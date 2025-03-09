@@ -11,19 +11,6 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    //     $this->middleware(function ($request, $next) {
-    //         if (auth()->user()->role !== 'admin') {
-    //             abort(403, 'Bạn không có quyền truy cập.');
-    //         }
-    //         return $next($request);
-    //     });
-    // }
 
     public function authorize(): bool
     {
@@ -60,9 +47,12 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        
+        $user = Auth::user();
+
         // Kiểm tra role của user
-        if (Auth::user()->role !== 'admin') {
-            Auth::logout(); // Đăng xuất ngay nếu không phải admin
+        if (!in_array($user->role, ['admin', 'host'])) {
+            Auth::logout();
             throw ValidationException::withMessages([
                 'email' => 'Bạn không có quyền truy cập.',
             ]);
@@ -100,6 +90,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 }

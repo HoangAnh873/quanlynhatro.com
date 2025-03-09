@@ -36,6 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route cho host
+Route::middleware('auth')->group(function () {
+    Route::get('/host/dashboard', [HostController::class, 'dashboard'])->name('host.dashboard');
+});
+
 /**
  * Routes cho quản trị viên (Admin)
  */

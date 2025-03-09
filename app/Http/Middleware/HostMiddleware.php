@@ -10,10 +10,10 @@ class HostMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
-            abort(403, 'Unauthorized action.');
+        if (!Auth::check() || Auth::user()->role !== 'host') {
+            return redirect('/login')->with('error', 'Bạn không có quyền truy cập!');
         }
-    
+
         return $next($request);
     }
 }
