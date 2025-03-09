@@ -29,33 +29,33 @@ class AppServiceProvider extends ServiceProvider
                         ['header' => 'QUẢN LÝ'],
                         [
                             'text' => 'Dashboard',
-                            'url'  => 'admin/dashboard',
+                            'url'  => route('admin.dashboard'),
                             'icon' => 'fas fa-tachometer-alt',
                         ],
                         [
                             'text' => 'Chủ Trọ',
-                            'url'  => 'admin/hosts',
+                            'url'  => route('hosts.index'),
                             'icon' => 'fas fa-user',
                         ],
                         [
                             'text' => 'Trường Học',
-                            'url'  => 'admin/schools',
+                            'url'  => route('schools.index'),
                             'icon' => 'fas fa-school',
                         ],
                         [
                             'text' => 'Bản Đồ',
-                            'url'  => 'admin/map',
+                            'url'  => url('admin/map'),
                             'icon' => 'fas fa-map-marked-alt',
                         ],
                         ['header' => 'HỆ THỐNG'],
                         [
                             'text' => 'Quản lý Tài Khoản',
-                            'url'  => 'admin/users',
+                            'url'  => route('users.index'),
                             'icon' => 'fas fa-users-cog',
                         ],
                         [
                             'text' => 'Cài Đặt',
-                            'url'  => 'admin/settings',
+                            'url'  => url('admin/settings'),
                             'icon' => 'fas fa-cogs',
                         ],
                     ];
@@ -64,37 +64,48 @@ class AppServiceProvider extends ServiceProvider
                         ['header' => 'QUẢN LÝ KHU TRỌ'],
                         [
                             'text' => 'Dashboard',
-                            'url'  => 'host/dashboard',
+                            'url'  => route('host.dashboard'),
                             'icon' => 'fas fa-tachometer-alt',
                         ],
                         [
                             'text' => 'Quản lý Khu Trọ',
-                            'url'  => 'host/areas',
+                            'url'  => route('host.apartments.index'),
                             'icon' => 'fas fa-home',
                         ],
                         [
-                            'text' => 'Quản lý Phòng',
-                            'url'  => 'host/rooms',
+                            'text' => 'Quản lý loại phòng',
+                            'url'  => url('host/types'), // Chưa có route, cần thêm vào web.php
                             'icon' => 'fas fa-door-open',
                         ],
                         [
+                            'text' => 'Danh sách Phòng',
+                            'url'  => url('host/rooms'), // Chưa có route, cần thêm vào web.php
+                            'icon' => 'fas fa-bed',
+                        ],
+                        [
+                            'text' => 'Duyệt Phiếu Thuê Phòng',
+                            'url'  => url('host/rental-requests'), // Chưa có route, cần thêm vào web.php
+                            'icon' => 'fas fa-clipboard-check',
+                        ],
+                        [
                             'text' => 'Quản lý Hợp Đồng',
-                            'url'  => 'host/contracts',
+                            'url'  => url('host/contracts'), // Chưa có route, cần thêm vào web.php
                             'icon' => 'fas fa-file-signature',
                         ],
                         ['header' => 'HỆ THỐNG'],
                         [
                             'text' => 'Cài Đặt',
-                            'url'  => 'host/settings',
+                            'url'  => url('host/settings'),
                             'icon' => 'fas fa-cogs',
                         ],
                     ];
                 } else {
                     $menu = [];
                 }
-
+    
                 Config::set('adminlte.menu', $menu);
             }
         });
     }
+    
 }

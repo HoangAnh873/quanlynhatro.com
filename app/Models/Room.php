@@ -9,11 +9,16 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['apartment_id', 'room_number', 'capacity', 'price', 'is_available'];
+    protected $fillable = ['apartment_id', 'room_type_id', 'room_number', 'capacity', 'price', 'is_available'];
 
     public function apartment()
     {
         return $this->belongsTo(Apartment::class);
+    }
+
+    public function roomType()
+    {
+        return $this->belongsTo(RoomType::class);
     }
 
     public function contracts()

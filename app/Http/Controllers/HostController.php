@@ -56,7 +56,7 @@ class HostController extends Controller
             'address' => $request->address,
         ]);
 
-        return redirect()->route('hosts.index')->with('success', 'Thêm chủ trọ thành công!');
+        return redirect()->route('host.index')->with('success', 'Thêm chủ trọ thành công!');
     }
 
     // Hiển thị form chỉnh sửa chủ trọ
@@ -88,7 +88,7 @@ class HostController extends Controller
             'email' => $request->email,
         ]);
 
-        return redirect()->route('hosts.index')->with('success', 'Cập nhật thông tin thành công!');
+        return redirect()->route('host.index')->with('success', 'Cập nhật thông tin thành công!');
     }
 
     // Xóa chủ trọ (kèm user liên quan)
@@ -103,6 +103,6 @@ class HostController extends Controller
 
         $host->delete();
 
-        return redirect()->route('hosts.index')->with('success', 'Xóa thành công!');
+        return redirect()->route('host.index')->with('success', 'Xóa thành công!');
     }
 }

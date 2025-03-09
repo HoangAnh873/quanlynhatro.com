@@ -9,7 +9,7 @@ class Apartment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['host_id', 'name', 'description', 'location'];
+    protected $fillable = ['host_id', 'name', 'description', 'location','GPS_Latitude', 'GPS_Longitude'];
 
     public function host()
     {

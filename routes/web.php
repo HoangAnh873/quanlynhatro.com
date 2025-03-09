@@ -6,6 +6,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HostController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ApartmentController;
+use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\RoomController;
 
 /**
  * Routes cho giao diện người dùng
@@ -36,10 +39,30 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route cho host
-Route::middleware('auth')->group(function () {
-    Route::get('/host/dashboard', [HostController::class, 'dashboard'])->name('host.dashboard');
+//Route cho host
+Route::middleware('auth')->prefix('host')->name('host.')->group(function () {
+    Route::get('/dashboard', [HostController::class, 'dashboard'])->name('dashboard');
+
+    // Routes quản lý khu trọ
+    Route::resource('apartments', ApartmentController::class)->names('apartments');
+
+    // Routes quản lý loại phòng (types)
+    Route::resource('types', RoomTypeController::class)->names('types');
+
+    // Routes cho phòng (rooms)
+    Route::resource('rooms', RoomController::class)->names('rooms');
+
+    // Thêm routes cho duyệt phiếu thuê phòng
+    Route::get('/rental-requests', function () {
+        return view('host.rental_requests.index');
+    })->name('host.rental_requests.index');
+
+    // Thêm routes cho quản lý hợp đồng
+    Route::get('/contracts', function () {
+        return view('host.contracts.index');
+    })->name('host.contracts.index');
 });
+
 
 /**
  * Routes cho quản trị viên (Admin)
