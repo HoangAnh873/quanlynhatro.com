@@ -15,8 +15,15 @@
         <form action="{{ route('host.rooms.store') }}" method="POST">
             @csrf
 
+            <!-- Hiển thị khu trọ đã chọn nhưng không cho chỉnh sửa -->
             <div class="form-group">
-                <label for="room_number">Số Thứ Tự</label>
+                <label for="apartment_name">Khu Trọ</label>
+                <input type="text" id="apartment_name" class="form-control" value="{{ $apartment->name }}" readonly>
+                <input type="hidden" name="apartment_id" value="{{ $apartment->id }}">
+            </div>
+
+            <div class="form-group">
+                <label for="room_number">Tên phòng</label>
                 <input type="text" id="room_number" name="room_number" class="form-control" required>
             </div>
 
@@ -32,7 +39,7 @@
 
             <div class="form-group">
                 <label for="price">Giá Thuê (VNĐ)</label>
-                <input type="number" id="price" name="price" class="form-control" readonly>
+                <input type="number" id="price" name="price" class="form-control" readonly value="0">
             </div>
 
             <div class="form-group">
@@ -56,9 +63,13 @@
         var select = document.getElementById("room_type_id");
         var priceInput = document.getElementById("price");
         var selectedOption = select.options[select.selectedIndex];
-        var price = selectedOption.getAttribute("data-price") || 0;
-        priceInput.value = price;
+        var price = selectedOption ? selectedOption.getAttribute("data-price") : 0;
+        priceInput.value = price || 0;
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        updatePrice();
+    });
 </script>
 
 @endsection

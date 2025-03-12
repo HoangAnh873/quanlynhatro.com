@@ -14,6 +14,14 @@
     <div class="card-body">
         <form action="{{ route('host.types.store') }}" method="POST">
             @csrf
+            
+            <!-- Hiển thị khu trọ đã chọn nhưng không cho chỉnh sửa -->
+            <div class="form-group">
+                <label for="apartment_name">Khu Trọ</label>
+                <input type="text" id="apartment_name" class="form-control" value="{{ $apartment->name }}" readonly>
+                <input type="hidden" name="apartment_id" value="{{ $apartment->id }}">
+            </div>
+
             <div class="form-group">
                 <label for="name">Tên Loại Phòng</label>
                 <input type="text" id="name" name="name" class="form-control" required>

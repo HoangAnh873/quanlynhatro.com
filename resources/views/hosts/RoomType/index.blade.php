@@ -13,13 +13,31 @@
             <div class="card-header">
                 <h3 class="card-title">Danh sách Loại Phòng</h3>
                 <div class="card-tools">
-                    <a href="{{ route('host.types.create') }}" class="btn btn-primary btn-sm">
+                    <a href="{{ route('host.types.create', ['apartment_id' => $selectedApartment->id]) }}" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Thêm Loại Phòng
                     </a>
                 </div>
             </div>
 
             <div class="card-body">
+                <!-- Chọn khu trọ -->
+                <form method="GET" id="apartmentForm">
+                    <label for="apartmentSelect">Chọn khu trọ:</label>
+                    <select name="apartment_id" id="apartmentSelect" class="form-control">
+                        @foreach($apartments as $apartment)
+                            <option value="{{ $apartment->id }}" {{ $apartment->id == $selectedApartment->id ? 'selected' : '' }}>
+                                {{ $apartment->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+                
+                <script>
+                document.getElementById('apartmentSelect').addEventListener('change', function() {
+                    document.getElementById('apartmentForm').submit(); // Tự động gửi form khi chọn khu trọ
+                });
+                </script>
+                
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -32,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($roomTypes as $roomType)
+                        @foreach ($typeRooms as $roomType)
                             <tr>
                                 <td>{{ $roomType->id }}</td>
                                 <td>{{ $roomType->name }}</td>

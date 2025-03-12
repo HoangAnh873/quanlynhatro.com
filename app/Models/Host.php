@@ -16,9 +16,9 @@ class Host extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function apartment()
+    public function apartments()
     {
-        return $this->hasMany(Apartment::class);
+        return $this->hasMany(Apartment::class, 'host_id', 'id');
     }
     
 }

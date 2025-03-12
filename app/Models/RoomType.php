@@ -12,9 +12,15 @@ class RoomType extends Model
     protected $table = 'room_types';
     
     protected $fillable = [
+        'apartment_id',
         'name',
         'max_occupants',
         'area',
         'price',
     ];
+
+    public function apartment()
+    {
+        return $this->belongsTo(Apartment::class);
+    }
 }

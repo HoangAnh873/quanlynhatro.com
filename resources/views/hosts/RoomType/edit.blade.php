@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <label for="max_occupants">Số Người Tối Đa</label>
-                <input type="number" id="max_occupants" name="max_occupants" class="form-control" value="{{ $roomType->max_people }}" required>
+                <input type="number" id="max_occupants" name="max_occupants" class="form-control" value="{{ $roomType->max_occupants }}" required>
             </div>
 
             <div class="form-group">
