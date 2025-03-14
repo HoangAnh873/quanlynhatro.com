@@ -9,11 +9,34 @@ class Contract extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['room_id', 'tenant_id', 'start_date', 'end_date', 'deposit'];
+    protected $fillable = [
+        'rental_receipt_id',
+        'room_id',
+        'host_id',
+        'tenant_id',
+        'start_date',
+        'end_date',
+        'deposit',
+    ];
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function rentalReceipt()
+    {
+        return $this->belongsTo(RentalReceipt::class);
+    }
 
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function host()
+    {
+        return $this->belongsTo(Host::class);
     }
 
     public function tenant()
@@ -21,9 +44,5 @@ class Contract extends Model
         return $this->belongsTo(Tenant::class);
     }
 
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
-    }
 }
 

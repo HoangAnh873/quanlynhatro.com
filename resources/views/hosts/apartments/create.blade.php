@@ -12,13 +12,13 @@
         <h3 class="card-title">Nhập thông tin Khu Trọ</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('host.apartments.store') }}" method="POST">
+        <form action="{{ route('host.apartments.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="form-group">
                 <label for="name">Tên Khu Trọ</label>
                 <input type="text" id="name" name="name" class="form-control" required>
-            </div>
+            </div>      
 
             <div class="form-group">
                 <label for="location">Địa Chỉ</label>

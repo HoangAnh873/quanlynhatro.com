@@ -7,32 +7,32 @@
     <!-- Phần Banner Bắt Đầu -->
     <section class="hero-section">
         <div class="hero-items owl-carousel">
-            <div class="single-hero-item set-bg" data-setbg="img/hero/hero-1.jpg">
+            <div class="single-hero-item set-bg" data-setbg="img/hero/hero4.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
                             <div class="hero-text">
-                                <p class="room-location"><i class="icon_pin"></i> 123 Đường 3/2, Ninh Kiều, Cần Thơ</p>
-                                <h2>Phòng trọ tiện nghi trung tâm Ninh Kiều</h2>
+                                {{-- <p class="room-location"><i class="icon_pin"></i> 123 Đường 3/2, Ninh Kiều, Cần Thơ</p> --}}
+                                <h2>Phòng trọ tiện nghi trung tâm Cần Thơ</h2>
                                 <div class="room-price">
                                     <span>Giá thuê từ:</span>
                                     <p>1.000.000 VNĐ/tháng</p>
                                 </div>
-                                <ul class="room-features">
-                                    <li>
-                                        <i class="fa fa-arrows"></i>
+                                <ul class="room-features list-unstyled d-flex justify-content-around">
+                                    <li class="text-center">
+                                        <i class="fa fa-arrows mb-2"></i>
                                         <p>20m²</p>
                                     </li>
-                                    <li>
-                                        <i class="fa fa-bed"></i>
+                                    <li class="text-center">
+                                        <i class="fa fa-bed mb-2"></i>
                                         <p>1 giường</p>
                                     </li>
-                                    <li>
-                                        <i class="fa fa-bath"></i>
+                                    <li class="text-center">
+                                        <i class="fa fa-bath mb-2"></i>
                                         <p>1 phòng tắm</p>
                                     </li>
-                                    <li>
-                                        <i class="fa fa-wifi"></i>
+                                    <li class="text-center">
+                                        <i class="fa fa-wifi mb-2"></i>
                                         <p>Wi-Fi miễn phí</p>
                                     </li>
                                 </ul>
@@ -41,7 +41,8 @@
                     </div>
                 </div>
             </div>
-            <div class="single-hero-item set-bg" data-setbg="img/hero/hero-2.jpg">
+
+            {{-- <div class="single-hero-item set-bg" data-setbg="img/hero/hero5.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
@@ -75,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <div class="single-hero-item set-bg" data-setbg="img/hero/hero-3.jpg">
+            <div class="single-hero-item set-bg" data-setbg="img/hero/hero6.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
@@ -108,9 +109,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+
         </div>
-        <div class="thumbnail-pic">
+
+        {{-- <div class="thumbnail-pic">
             <div class="thumbs owl-carousel">
                 <div class="item">
                     <img src="img/hero/dot-1.jpg" alt="">
@@ -122,7 +125,8 @@
                     <img src="img/hero/dot-3.jpg" alt="">
                 </div>
             </div>
-        </div>
+        </div> --}}
+
     </section>
     <!-- Phần Banner Kết Thúc -->
 
@@ -175,10 +179,11 @@
                             Tìm kiếm phòng trọ tại đây
                         </div>
                     </div>
-                    <form action="#" class="filter-form">
+                    <form action="{{ route('user.rooms.search') }}" method="GET" class="filter-form">
+                        @csrf
                         <div class="first-row row g-3">
                             <div class="col-md-6">
-                                <select id="numPeople" class="form-control">
+                                <select name="num_people" class="form-control">
                                     <option value="">Chọn số người</option>
                                     <option value="1">1 người</option>
                                     <option value="2">2 người</option>
@@ -187,7 +192,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
-                                <select id="priceRange" class="form-control">
+                                <select name="price" class="form-control">
                                     <option value="">Chọn mức giá</option>
                                     <option value="1000000">Dưới 1 triệu</option>
                                     <option value="1500000">Dưới 1.5 triệu</option>
@@ -199,144 +204,24 @@
                         <div class="second-row row g-3 mt-3">
                             <div class="col-md-6">
                                 <label for="checkInDate" class="form-label">Ngày nhận phòng</label>
-                                <input type="date" id="checkInDate" class="form-control">
+                                <input type="date" name="check_in_date" class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label for="checkOutDate" class="form-label">Ngày trả phòng</label>
-                                <input type="date" id="checkOutDate" class="form-control">
+                                <input type="date" name="check_out_date" class="form-control">
                             </div>
                         </div>
                         <div class="text-center mt-4">
-                            <button type="button" class="search-btn btn btn-primary px-4 py-2">Tìm kiếm</button>
+                            <button type="submit" class="search-btn btn btn-primary px-4 py-2">Tìm kiếm</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
     <!-- Phần Tìm Kiếm Phòng Trọ Kết Thúc -->
 
-    {{-- <!-- Phần Nhà Trọ Nổi Bật Bắt Đầu -->
-    <section class="feature-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <span>Danh Sách Từ Chủ Trọ</span>
-                        <h2>Nhà Trọ Nổi Bật</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="feature-carousel owl-carousel">
-                    <div class="col-lg-4">
-                        <div class="feature-item">
-                            <div class="fi-pic set-bg" data-setbg="img/feature/feature-1.jpg">
-                                <div class="pic-tag">
-                                    <div class="f-text">Nổi bật</div>
-                                    <div class="s-text">Cho Thuê</div>
-                                </div>
-                                <div class="feature-author">
-                                    <div class="fa-pic">
-                                        <img src="img/feature/f-author-1.jpg" alt="">
-                                    </div>
-                                    <div class="fa-text">
-                                        <span>Rena Simmons</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fi-text">
-                                <div class="inside-text">
-                                    <h4>Biệt Thự French Riviera</h4>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker"></i> 180 York Road, London, UK</li>
-                                        <li><i class="fa fa-tag"></i> Biệt thự</li>
-                                    </ul>
-                                    <h5 class="price">$5900<span>/tháng</span></h5>
-                                </div>
-                                <ul class="room-features">
-                                    <li><i class="fa fa-arrows"></i><p>780 sqft</p></li>
-                                    <li><i class="fa fa-bed"></i><p>4</p></li>
-                                    <li><i class="fa fa-bath"></i><p>3</p></li>
-                                    <li><i class="fa fa-car"></i><p>2</p></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Thêm các nhà trọ nổi bật khác tại đây -->
-                    
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Phần Nhà Trọ Nổi Bật Kết Thúc --> --}}
-
-
-    {{-- <!-- Phần Video Bắt Đầu -->
-    <div class="video-section set-bg" data-setbg="img/video-bg.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="video-text">
-                        <a href="https://www.youtube.com/watch?v=EzKkl64rRbM" class="play-btn video-popup"><i class="fa fa-play"></i></a>
-                        <h4>Tìm Kiếm Hoàn Hảo</h4>
-                        <h2>Nhà Môi Giới Bất Động Sản Gần Bạn</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Phần Video Kết Thúc --> --}}
-
-    {{-- <!-- Phần Nhà Trọ Hàng Đầu Bắt Đầu -->
-    <div class="top-properties-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="properties-title">
-                        <div class="section-title">
-                            <span>Nhà Trọ Tốt Nhất Dành Cho Bạn</span>
-                            <h2>Nhà Trọ Hàng Đầu</h2>
-                        </div>
-                        <a href="#" class="top-property-all">Xem Tất Cả</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="top-properties-carousel owl-carousel">
-                <div class="single-top-properties">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="stp-pic">
-                                <img src="img/properties/properties-1.jpg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="stp-text">
-                                <div class="s-text">Cần Bán</div>
-                                <h2>Biệt Thự 9721 Glen Creek</h2>
-                                <div class="room-price">
-                                    <span>Giá Bắt Đầu Từ:</span>
-                                    <h4>$3.000.000</h4>
-                                </div>
-                                <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave. Ballston Spa, NY</div>
-                                <p>Một căn biệt thự rộng rãi với không gian sang trọng và đầy đủ tiện nghi.</p>
-                                <ul class="room-features">
-                                    <li><i class="fa fa-arrows"></i><p>5201 sqft</p></li>
-                                    <li><i class="fa fa-bed"></i><p>8 Phòng Ngủ</p></li>
-                                    <li><i class="fa fa-bath"></i><p>7 Phòng Tắm</p></li>
-                                    <li><i class="fa fa-car"></i><p>1 Gara</p></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Phần Nhà Trọ Hàng Đầu Kết Thúc --> --}}
 
     <!-- Phần Blog Mới Nhất -->
     <section class="blog-section latest-blog spad">
@@ -392,39 +277,5 @@
         </div>
     </section>
     <!-- Kết Thúc Phần Blog Mới Nhất -->
-
-    {{-- <!-- Phần Đối Tác Bắt Đầu -->
-    <div class="partner-section">
-        <div class="container">
-            <div class="partner-carousel owl-carousel">
-                <a href="#" class="partner-logo">
-                    <div class="partner-logo-tablecell">
-                        <img src="img/partner/partner-1.png" alt="Đối tác 1">
-                    </div>
-                </a>
-                <a href="#" class="partner-logo">
-                    <div class="partner-logo-tablecell">
-                        <img src="img/partner/partner-2.png" alt="Đối tác 2">
-                    </div>
-                </a>
-                <a href="#" class="partner-logo">
-                    <div class="partner-logo-tablecell">
-                        <img src="img/partner/partner-3.png" alt="Đối tác 3">
-                    </div>
-                </a>
-                <a href="#" class="partner-logo">
-                    <div class="partner-logo-tablecell">
-                        <img src="img/partner/partner-4.png" alt="Đối tác 4">
-                    </div>
-                </a>
-                <a href="#" class="partner-logo">
-                    <div class="partner-logo-tablecell">
-                        <img src="img/partner/partner-5.png" alt="Đối tác 5">
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Phần Đối Tác Kết Thúc --> --}}
     
 @endsection

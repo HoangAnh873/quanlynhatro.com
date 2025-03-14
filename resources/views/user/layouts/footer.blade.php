@@ -1,14 +1,14 @@
     <!-- Footer -->
-    <footer class="footer-section set-bg" data-setbg="img/footer-bg.jpg">
+    <footer class="footer-section set-bg" data-setbg="{{ asset('img/footer-bg.jpg') }}">
         <div class="container">
             <div class="footer-text">
                 <div class="row">
                     <!-- Logo & Đăng Ký Nhận Tin -->
                     <div class="col-lg-3">
                         <div class="footer-logo">
-                            <div class="logo">
-                                <a href="#"><img src="img/footer-logo.png" alt="Logo"></a>
-                            </div>
+                            {{-- <div class="logo">
+                                <a href="#"><img src="{{ asset('img/footer-logo.png') }}" alt="Logo"></a>
+                            </div>  --}}
                             <p>Đăng ký để nhận thông báo về các phòng trọ mới nhất.</p>
                             <form action="#" class="newslatter-form">
                                 <input type="email" placeholder="Nhập email của bạn...">

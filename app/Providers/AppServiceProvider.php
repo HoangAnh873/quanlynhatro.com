@@ -33,17 +33,17 @@ class AppServiceProvider extends ServiceProvider
                             'icon' => 'fas fa-tachometer-alt',
                         ],
                         [
-                            'text' => 'Chủ Trọ',
+                            'text' => 'Quản lý chủ trọ',
                             'url'  => route('hosts.index'),
                             'icon' => 'fas fa-user',
                         ],
                         [
-                            'text' => 'Trường Học',
+                            'text' => 'Quản lý trường học',
                             'url'  => route('schools.index'),
                             'icon' => 'fas fa-school',
                         ],
                         [
-                            'text' => 'Bản Đồ',
+                            'text' => 'Quản lý bản Đồ',
                             'url'  => url('admin/map'),
                             'icon' => 'fas fa-map-marked-alt',
                         ],
@@ -84,7 +84,7 @@ class AppServiceProvider extends ServiceProvider
                         ],
                         [
                             'text' => 'Duyệt Phiếu Thuê Phòng',
-                            'url'  => url('host/rental-requests'), // Chưa có route, cần thêm vào web.php
+                            'url'  => url('host/rentals'), // Chưa có route, cần thêm vào web.php
                             'icon' => 'fas fa-clipboard-check',
                         ],
                         [

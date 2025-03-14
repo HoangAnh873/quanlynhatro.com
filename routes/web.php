@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\Rental_ReceiptController;
 
 /**
  * Routes cho giao diện người dùng
@@ -17,9 +18,14 @@ Route::get('/', function () {
     return view('user.pages.home');
 })->name('home');
 
-Route::get('/rooms', function () {
-    return view('user.pages.rooms');
-})->name('rooms');
+Route::get('/apartments/list', [ApartmentController::class, 'list'])->name('user.apartments.list');
+Route::get('/apartments/search', [ApartmentController::class, 'search'])->name('user.apartments.search');
+Route::get('/apartments/{apartment}', [ApartmentController::class, 'show'])->name('user.apartments.show');
+
+Route::get('/rooms/search', [RoomController::class, 'search'])->name('user.rooms.search');
+
+Route::get('/rooms/rentals/{id}', [Rental_ReceiptController::class, 'index'])->name('user.rentals.index');
+Route::post('/rooms/rentals', [Rental_ReceiptController::class, 'store'])->name('user.rentals.store');
 
 Route::get('/contact', function () {
     return view('user.pages.contact');
@@ -53,9 +59,9 @@ Route::middleware('auth')->prefix('host')->name('host.')->group(function () {
     Route::resource('rooms', RoomController::class)->names('rooms');
 
     // Thêm routes cho duyệt phiếu thuê phòng
-    Route::get('/rental-requests', function () {
-        return view('host.rental_requests.index');
-    })->name('host.rental_requests.index');
+    Route::get('rentals', [Rental_ReceiptController::class, 'show'])->name('rentals.show');
+    Route::patch('rentals/{id}/approve', [Rental_ReceiptController::class, 'approve'])->name('rentals.approve');
+    Route::patch('rentals/{id}/reject', [Rental_ReceiptController::class, 'reject'])->name('rentals.reject');
 
     // Thêm routes cho quản lý hợp đồng
     Route::get('/contracts', function () {

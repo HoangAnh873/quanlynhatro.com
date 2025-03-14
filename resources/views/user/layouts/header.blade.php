@@ -6,17 +6,22 @@
                 <div class="col-lg-7">
                     <nav class="main-menu">
                         <ul>
-                            <li class="active"><a href="{{ route('home') }}">Trang chủ</a></li>
-                            <li><a href="{{ route('rooms') }}">Danh sách khu trọ</a></li>
-                            <li><a href="#">Dịch vụ</a></li>
-                            <li><a href="{{ route('contact') }}">Hỗ trợ</a></li>
+                            <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                                <a href="{{ route('home') }}">Trang chủ</a>
+                            </li>
+                            <li class="{{ request()->routeIs('user.apartments.list') ? 'active' : '' }}">
+                                <a href="{{ route('user.apartments.list') }}">Danh sách khu trọ</a>
+                            </li>
+                            <li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
+                                <a href="{{ route('contact') }}">Hỗ trợ</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-5">
                     <div class="top-right">
                         <div class="language-option">
-                            <img src="{{ asset('img/flag.png') }}" alt="">
+                            {{-- <img src="{{ asset('img/flag1.png') }}" alt=""> --}}
                             <span>Tiếng Việt</span>
                             <i class="fa fa-angle-down"></i>
                             <div class="flag-dropdown">

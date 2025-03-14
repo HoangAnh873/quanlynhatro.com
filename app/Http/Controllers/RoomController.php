@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Apartment;
+use Carbon\Carbon;
 
 class RoomController extends Controller
 {
@@ -212,4 +213,56 @@ class RoomController extends Controller
 
         return redirect()->route('host.rooms.index')->with('success', 'Xóa phòng thành công!');
     }
+    
+    public function search(Request $request)
+    {
+        
+        $query = Room::query();
+    
+        // Lọc theo số người tối đa
+        if ($request->filled('num_people')) {
+            $numPeople = intval($request->num_people);
+            $query->whereHas('roomType', function ($q) use ($numPeople) {
+                $q->where('max_occupants', '>=', $numPeople);
+            });
+        }
+    
+        // Lọc theo giá phòng
+        if ($request->filled('price')) {
+            $price = intval($request->price);
+            if ($price > 2000000) {
+                $query->where('price', '>', 2000000);
+            } else {
+                $query->where('price', '<=', $price);
+            }
+        }
+    
+        // Lọc theo ngày nhận và trả phòng
+        if ($request->filled(['check_in_date', 'check_out_date'])) {
+            try {
+                $checkIn = Carbon::parse($request->check_in_date);
+                $checkOut = Carbon::parse($request->check_out_date);
+    
+                if ($checkIn->gt($checkOut)) {
+                    return back()->with('error', 'Ngày nhận phòng phải trước ngày trả phòng!');
+                }
+    
+                $query->whereDoesntHave('contracts', function ($q) use ($checkIn, $checkOut) {
+                    $q->where('end_date', '>=', $checkIn)
+                      ->where('start_date', '<=', $checkOut);
+                });
+    
+            } catch (\Exception $e) {
+                return back()->with('error', 'Ngày không hợp lệ!');
+            }
+        }
+    
+        // Lấy danh sách phòng hợp lệ
+        $rooms = $query->get();
+    
+        // Chuyển hướng đến trang kết quả tìm kiếm
+        return view('user.pages.search', compact('rooms'));
+    }
+    
+
 }

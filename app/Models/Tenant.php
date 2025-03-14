@@ -9,12 +9,12 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'phone'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = [
+        'full_name', 
+        'phone', 
+        'gender', 
+        'birth_date'
+    ];
 
     public function contracts()
     {

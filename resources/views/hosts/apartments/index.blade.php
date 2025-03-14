@@ -25,6 +25,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Tên Khu Trọ</th>
+                            {{-- <th>hình ảnh</th> --}}
                             <th>Địa Chỉ</th>
                             <th>Vĩ Độ</th>
                             <th>Kinh Độ</th>
@@ -36,6 +37,7 @@
                             <tr>
                                 <td>{{ $apartment->id }}</td>
                                 <td>{{ $apartment->name }}</td>
+                                {{-- <td>{{ $apartment->image }}</td> --}}
                                 <td>{{ $apartment->location }}</td>
                                 <td>{{ $apartment->GPS_Latitude }}</td>
                                 <td>{{ $apartment->GPS_Longitude }}</td>

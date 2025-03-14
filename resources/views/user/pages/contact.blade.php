@@ -31,7 +31,7 @@
                     <div class="contact-map">
                         <iframe
                             src="https://www.google.com/maps?q=123+đường+3/2,Ninh+Kiều,Cần+Thơ&output=embed"
-                            width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy">
+                            width="100%" height="600" style="border:0; pointer-events: none;" allowfullscreen="" loading="lazy">
                         </iframe>
                         <div class="map-inside">
                             <i class="fa fa-map-marker"></i>
