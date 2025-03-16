@@ -11,7 +11,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>5</h3>
+                    <h3>{{ $tenantCount }}</h3>
                     <p>khách thuê</p>
                 </div>
                 <div class="icon">
@@ -22,7 +22,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>7</h3>
+                    <h3>{{ $roomCount }}</h3>
                     <p>phòng trọ</p>
                 </div>
                 <div class="icon">
@@ -33,7 +33,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>1</h3>
+                    <h3>{{ $emptyRoomCount }}</h3>
                     <p>phòng trống</p>
                 </div>
                 <div class="icon">
@@ -42,13 +42,13 @@
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
+            <div class="small-box bg-primary">
                 <div class="inner">
-                    <h3>2</h3>
-                    <p>chưa thanh toán</p>
+                    <h3>{{ $pendingRentals }}</h3>
+                    <p>phiếu đợi duyệt</p>
                 </div>
                 <div class="icon">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-file-alt"></i>
                 </div>
             </div>
         </div>

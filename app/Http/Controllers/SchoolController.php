@@ -21,43 +21,65 @@ class SchoolController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'house_number' => 'nullable|string|max:50',
-            'street' => 'nullable|string|max:255',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'location' => 'nullable|string|max:255',
+            'GPS_Latitude' => 'nullable|numeric',
+            'GPS_Longitude' => 'nullable|numeric',
+            'icon' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
         ]);
 
-        School::create($request->all());
-        return redirect()->route('schools.index')->with('success', 'Thêm trường thành công!');
+        // Xử lý upload icon nếu có
+        if ($request->hasFile('icon')) {
+            $iconName = time() . '.' . $request->file('icon')->getClientOriginalExtension();
+            $request->file('icon')->move(public_path('img/icons'), $iconName);
+            $data['icon'] = $iconName;
+        }
+
+        // Tạo mới trường học
+        School::create($data);
+
+        return redirect()->route('schools.index')->with('success', 'Thêm trường học thành công!');
     }
 
-    public function edit($id)
+    public function edit(School $school)
     {
-        $school = School::findOrFail($id);
         return view('schools.edit', compact('school'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
-            'house_number' => 'nullable|string|max:50',
-            'street' => 'nullable|string|max:255',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'location' => 'nullable|string|max:255',
+            'GPS_Latitude' => 'nullable|numeric',
+            'GPS_Longitude' => 'nullable|numeric',
+            'icon' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
         ]);
-
+    
         $school = School::findOrFail($id);
-        $school->update($request->all());
-        return redirect()->route('schools.index')->with('success', 'Cập nhật trường thành công!');
+    
+        // Nếu có icon mới thì cập nhật
+        if ($request->hasFile('icon')) {
+            $iconName = time() . '.' . $request->icon->extension();
+            $request->icon->move(public_path('img/icons'), $iconName);
+            $data['icon'] = $iconName;
+        } else {
+            // Giữ nguyên icon cũ
+            $data['icon'] = $school->icon;
+        }
+    
+        $school->update($data);
+    
+        return redirect()->route('schools.index')->with('success', 'Cập nhật trường học thành công!');
     }
+    
+    
 
-    public function destroy($id)
+    public function destroy(School $school)
     {
-        $school = School::findOrFail($id);
         $school->delete();
-        return redirect()->route('schools.index')->with('success', 'Xóa trường thành công!');
+
+        return redirect()->route('schools.index')->with('success', 'Xóa trường học thành công!');
     }
 }

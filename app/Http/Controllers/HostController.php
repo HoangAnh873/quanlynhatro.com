@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Host;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contract;
+use App\Models\Room;
+use App\Models\RentalReceipt;
+
 
 class HostController extends Controller
 {
@@ -16,8 +20,32 @@ class HostController extends Controller
 
     public function dashboard()
     {
-        return view('hosts.dashboard'); 
-    }
+        $user = auth()->user();
+        $host = $user->host;
+    
+        if (!$host) {
+            return redirect()->back()->with('error', 'Không tìm thấy tài khoản chủ trọ.');
+        }
+    
+        // Lấy số lượng khách thuê theo host
+        $tenantCount = Contract::where('host_id', $host->id)->distinct('tenant_id')->count('tenant_id');
+    
+        // Lấy số lượng phòng của chủ trọ
+        $roomCount = Room::whereIn('apartment_id', $host->apartments->pluck('id'))->count();
+    
+        // Số lượng phòng trống
+        $emptyRoomCount = Room::whereIn('apartment_id', $host->apartments->pluck('id'))
+                            ->where('is_available', 1)
+                            ->count();
+    
+        // Số phiếu thuê đang chờ duyệt
+        $pendingRentals = RentalReceipt::whereIn('room_id', Room::whereIn('apartment_id', $host->apartments->pluck('id'))->pluck('id'))
+                            ->where('status', 'pending')
+                            ->count();
+    
+        return view('hosts.dashboard', compact('tenantCount', 'roomCount', 'emptyRoomCount', 'pendingRentals'));
+    }    
+    
 
     // Hiển thị danh sách tất cả chủ trọ
     public function index()

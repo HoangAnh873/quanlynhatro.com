@@ -83,6 +83,7 @@ class Rental_ReceiptController extends Controller
                 'tenant_id' => $rental->tenant_id,
                 'start_date' => $rental->start_date,
                 'end_date' => $rental->end_date,
+                'original_end_date' => $rental->end_date,
                 'deposit' => $rental->deposit,
             ]);
         

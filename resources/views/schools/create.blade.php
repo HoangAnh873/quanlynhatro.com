@@ -6,7 +6,7 @@
         <h3 class="card-title">Thêm Trường Học</h3>
     </div>
     <div class="card-body">
-        <form action="{{ route('schools.store') }}" method="POST">
+        <form action="/admin/schools" method="POST" enctype="multipart/form-data">
             @csrf
             @include('partials.school_form')
             <button type="submit" class="btn btn-primary">Lưu</button>

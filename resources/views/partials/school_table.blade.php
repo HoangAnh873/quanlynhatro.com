@@ -1,7 +1,8 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>#</th>
+            <th>STT</th>
+            <th>Icon</th>
             <th>Tên Trường</th>
             <th>Địa Chỉ</th>
             <th>Vĩ Độ</th>
@@ -13,13 +14,17 @@
         @foreach ($schools as $key => $school)
         <tr>
             <td>{{ $key + 1 }}</td>
-            <td>{{ $school->name }}</td>
             <td>
-                {{ $school->house_number ? $school->house_number . ', ' : '' }}
-                {{ $school->street ?? 'N/A' }}
+                @if ($school->icon)
+                    <img src="{{ asset('img/icons/' . $school->icon) }}" alt="Icon" width="40" height="40">
+                @else
+                    <span class="text-muted">Chưa có icon</span>
+                @endif
             </td>
-            <td>{{ $school->latitude ?? 'N/A' }}</td>
-            <td>{{ $school->longitude ?? 'N/A' }}</td>
+            <td>{{ $school->name }}</td>
+            <td>{{ $school->location ?? 'N/A' }}</td>
+            <td>{{ $school->GPS_Latitude ?? 'N/A' }}</td>
+            <td>{{ $school->GPS_Longitude ?? 'N/A' }}</td>
             <td>
                 <a href="{{ route('schools.edit', $school->id) }}" class="btn btn-warning btn-sm">
                     <i class="fas fa-edit"></i> Sửa

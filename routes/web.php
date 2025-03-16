@@ -10,6 +10,7 @@ use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\Rental_ReceiptController;
+use App\Http\Controllers\ContractController;
 
 /**
  * Routes cho giao diện người dùng
@@ -64,9 +65,11 @@ Route::middleware('auth')->prefix('host')->name('host.')->group(function () {
     Route::patch('rentals/{id}/reject', [Rental_ReceiptController::class, 'reject'])->name('rentals.reject');
 
     // Thêm routes cho quản lý hợp đồng
-    Route::get('/contracts', function () {
-        return view('host.contracts.index');
-    })->name('host.contracts.index');
+    Route::get('contracts', [ContractController::class, 'index'])->name('contracts.index');
+    Route::get('contracts/by-apartment/{apartmentId}', [ContractController::class, 'getContractsByApartment']);
+    Route::patch('contracts/{contract}/cancel', [ContractController::class, 'cancel'])->name('contracts.cancel');
+
+
 });
 
 

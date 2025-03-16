@@ -16,6 +16,7 @@ class Contract extends Model
         'tenant_id',
         'start_date',
         'end_date',
+        'original_end_date',
         'deposit',
     ];
 
