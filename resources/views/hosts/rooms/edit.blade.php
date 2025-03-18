@@ -52,7 +52,7 @@
 
             <div class="form-group">
                 <label for="is_available">Trạng Thái</label>
-                <select id="is_available" name="is_available" class="form-control">  {{--  disabled nếu không cho phép điều chỉnh  --}}
+                <select id="is_available" name="is_available" class="form-control" disabled>  {{--  disabled nếu không cho phép điều chỉnh  --}}
                     <option value="1" {{ $room->is_available ? 'selected' : '' }}>Còn trống</option>
                     <option value="0" {{ !$room->is_available ? 'selected' : '' }}>Đã thuê</option>
                 </select>

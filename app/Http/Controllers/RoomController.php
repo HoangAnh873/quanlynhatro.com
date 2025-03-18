@@ -8,6 +8,7 @@ use App\Models\Room;
 use App\Models\RoomType;
 use App\Models\Apartment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
@@ -216,7 +217,6 @@ class RoomController extends Controller
     
     public function search(Request $request)
     {
-        
         $query = Room::query();
     
         // Lọc theo số người tối đa
@@ -237,15 +237,15 @@ class RoomController extends Controller
             }
         }
     
-        // Lọc theo ngày nhận và trả phòng
-        if ($request->filled(['check_in_date', 'check_out_date'])) {
+        // Lọc theo ngày nhận phòng và tính ngày kết thúc
+        $checkIn = null;
+        $checkOut = null;
+    
+        if ($request->filled('check_in_date') && $request->filled('duration')) {
             try {
                 $checkIn = Carbon::parse($request->check_in_date);
-                $checkOut = Carbon::parse($request->check_out_date);
-    
-                if ($checkIn->gt($checkOut)) {
-                    return back()->with('error', 'Ngày nhận phòng phải trước ngày trả phòng!');
-                }
+                $duration = intval($request->duration); // Số tháng thuê
+                $checkOut = $checkIn->copy()->addMonths($duration);
     
                 $query->whereDoesntHave('contracts', function ($q) use ($checkIn, $checkOut) {
                     $q->where('end_date', '>=', $checkIn)
@@ -257,12 +257,61 @@ class RoomController extends Controller
             }
         }
     
+        // dd($request->all());
         // Lấy danh sách phòng hợp lệ
-        $rooms = $query->get();
-    
-        // Chuyển hướng đến trang kết quả tìm kiếm
-        return view('user.pages.search', compact('rooms'));
+        $rooms = $query->with(['apartment'])->get();
+
+        // Lọc theo bán kính nếu có tọa độ
+        if ($request->filled('latitude') && $request->filled('longitude') && $request->filled('radius')) {
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+            $radius = $request->radius;
+
+            // Tính khoảng cách cho từng phòng
+            foreach ($rooms as $room) {
+                if ($room->apartment) {
+                    $room->distance = $this->calculateDistance(
+                        $latitude, $longitude,
+                        $room->apartment->GPS_Latitude,
+                        $room->apartment->GPS_Longitude
+                    );
+                } else {
+                    $room->distance = null;
+                }
+            }
+
+            // Lọc các phòng trong bán kính
+            $rooms = $rooms->filter(function ($room) use ($radius) {
+                return $room->distance !== null && $room->distance <= $radius;
+            });
+
+            // Sắp xếp theo khoảng cách tăng dần
+            $rooms = $rooms->sortBy('distance');
+        }
+
+        return view('user.pages.search', compact('rooms', 'checkIn', 'checkOut'));
     }
-    
+
+    // Hàm tính khoảng cách theo công thức Haversine
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371; // Bán kính Trái Đất (km)
+
+        $lat1 = deg2rad($lat1);
+        $lon1 = deg2rad($lon1);
+        $lat2 = deg2rad($lat2);
+        $lon2 = deg2rad($lon2);
+
+        $dLat = $lat2 - $lat1;
+        $dLon = $lon2 - $lon1;
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos($lat1) * cos($lat2) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c; // Khoảng cách (km)
+    }
 
 }

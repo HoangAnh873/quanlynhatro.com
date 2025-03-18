@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Host;
 use App\Models\Apartment;
+use App\Models\Room;
+use App\Models\Tenant;
 
 class AdminController extends Controller
 {
@@ -15,7 +17,12 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $hostCount = Host::count();
+        $apartmentCount = Apartment::count();
+        $roomCount = Room::count();
+        $tenantCount = Tenant::count();
+
+        return view('admin.dashboard', compact('hostCount', 'apartmentCount', 'roomCount', 'tenantCount'));
     }
 
     public function index()

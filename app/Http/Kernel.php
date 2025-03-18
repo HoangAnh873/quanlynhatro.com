@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\CheckRoomAvailability;
 
 class Kernel extends HttpKernel
 {
@@ -14,6 +15,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Http\Middleware\HandleCors::class,
+        \App\Http\Middleware\CheckRoomAvailability::class,
     ];
 
     protected $middlewareGroups = [

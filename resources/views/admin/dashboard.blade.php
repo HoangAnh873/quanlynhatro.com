@@ -11,7 +11,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>10</h3>
+                    <h3>{{ $hostCount }}</h3>
                     <p>Chủ Trọ</p>
                 </div>
                 <div class="icon">
@@ -22,7 +22,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>15</h3>
+                    <h3>{{ $apartmentCount }}</h3>
                     <p>Khu Trọ</p>
                 </div>
                 <div class="icon">
@@ -33,7 +33,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>200</h3>
+                    <h3>{{ $roomCount }}</h3>
                     <p>Phòng Trọ</p>
                 </div>
                 <div class="icon">
@@ -44,7 +44,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>100</h3>
+                    <h3>{{ $tenantCount }}</h3>
                     <p>Khách Thuê</p>
                 </div>
                 <div class="icon">

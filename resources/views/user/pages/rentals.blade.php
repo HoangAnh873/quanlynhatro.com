@@ -33,11 +33,11 @@
         <div class="row">
             <div class="col-md-6 mb-4">
                 <label for="start_date" class="form-label fw-bold">Ngày bắt đầu</label>
-                <input type="date" name="start_date" class="form-control" required>
+                <input type="date" name="start_date" id="start_date" class="form-control bg-light" value="{{ $checkIn }}" readonly>
             </div>
             <div class="col-md-6 mb-4">
                 <label for="end_date" class="form-label fw-bold">Ngày kết thúc</label>
-                <input type="date" name="end_date" class="form-control" required>
+                <input type="date" name="end_date" id="end_date" class="form-control bg-light" value="{{ $checkOut }}" readonly>
             </div>
         </div>
 

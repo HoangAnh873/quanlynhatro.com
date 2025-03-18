@@ -11,12 +11,15 @@ use Illuminate\Http\Request;
 
 class Rental_ReceiptController extends Controller
 {
-    public function index($id)
+    public function index($id, Request $request)
     {
-        // Lấy thông tin phòng từ ID
-        $room = Room::find($id);
-        // Truyền qua compact
-        return view('user.pages.rentals', compact('room'));
+        $room = Room::findOrFail($id);
+    
+        // Lấy ngày bắt đầu và ngày kết thúc từ URL
+        $checkIn = $request->query('check_in');
+        $checkOut = $request->query('check_out');
+    
+        return view('user.pages.rentals', compact('room', 'checkIn', 'checkOut'));
     }
 
     public function store(Request $request)
@@ -60,15 +63,15 @@ class Rental_ReceiptController extends Controller
             $rental = RentalReceipt::findOrFail($id);
 
             // Kiểm tra lại trạng thái phòng trước khi duyệt
-            if ($rental->room->is_available === 0) {
-                return back();
-            }
-        
+            // if ($rental->room->is_available === 0) {
+            //     return back();
+            // }
+
             // Cập nhật trạng thái phiếu thuê
             $rental->update(['status' => 'approved']);
         
             // Cập nhật trạng thái phòng: is_available = 0
-            $rental->room->update(['is_available' => 0]);
+            // $rental->room->update(['is_available' => 0]);
         
             // Tự động từ chối các phiếu thuê khác của cùng phòng
             RentalReceipt::where('room_id', $rental->room_id)

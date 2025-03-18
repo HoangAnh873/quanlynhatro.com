@@ -11,6 +11,9 @@ use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\Rental_ReceiptController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\MapController;
+use App\Http\Controllers\DistanceController;
+use App\Http\Middleware\CheckRoomAvailability;
 
 /**
  * Routes cho giao diện người dùng
@@ -47,30 +50,33 @@ Route::middleware('auth')->group(function () {
 });
 
 //Route cho host
-Route::middleware('auth')->prefix('host')->name('host.')->group(function () {
-    Route::get('/dashboard', [HostController::class, 'dashboard'])->name('dashboard');
+//Route cho host
+Route::middleware(['auth', \App\Http\Middleware\CheckRoomAvailability::class])
+    ->prefix('host')
+    ->name('host.')
+    ->group(function () {
+        Route::get('/dashboard', [HostController::class, 'dashboard'])->name('dashboard');
 
-    // Routes quản lý khu trọ
-    Route::resource('apartments', ApartmentController::class)->names('apartments');
+        // Routes quản lý khu trọ
+        Route::resource('apartments', ApartmentController::class)->names('apartments');
 
-    // Routes quản lý loại phòng (types)
-    Route::resource('types', RoomTypeController::class)->names('types');
+        // Routes quản lý loại phòng (types)
+        Route::resource('types', RoomTypeController::class)->names('types');
 
-    // Routes cho phòng (rooms)
-    Route::resource('rooms', RoomController::class)->names('rooms');
+        // Routes cho phòng (rooms)
+        Route::resource('rooms', RoomController::class)->names('rooms');
 
-    // Thêm routes cho duyệt phiếu thuê phòng
-    Route::get('rentals', [Rental_ReceiptController::class, 'show'])->name('rentals.show');
-    Route::patch('rentals/{id}/approve', [Rental_ReceiptController::class, 'approve'])->name('rentals.approve');
-    Route::patch('rentals/{id}/reject', [Rental_ReceiptController::class, 'reject'])->name('rentals.reject');
+        // Thêm routes cho duyệt phiếu thuê phòng
+        Route::get('rentals', [Rental_ReceiptController::class, 'show'])->name('rentals.show');
+        Route::patch('rentals/{id}/approve', [Rental_ReceiptController::class, 'approve'])->name('rentals.approve');
+        Route::patch('rentals/{id}/reject', [Rental_ReceiptController::class, 'reject'])->name('rentals.reject');
 
-    // Thêm routes cho quản lý hợp đồng
-    Route::get('contracts', [ContractController::class, 'index'])->name('contracts.index');
-    Route::get('contracts/by-apartment/{apartmentId}', [ContractController::class, 'getContractsByApartment']);
-    Route::patch('contracts/{contract}/cancel', [ContractController::class, 'cancel'])->name('contracts.cancel');
-
-
+        // Thêm routes cho quản lý hợp đồng
+        Route::get('contracts', [ContractController::class, 'index'])->name('contracts.index');
+        Route::get('contracts/by-apartment/{apartmentId}', [ContractController::class, 'getContractsByApartment']);
+        Route::patch('contracts/{contract}/cancel', [ContractController::class, 'cancel'])->name('contracts.cancel');
 });
+
 
 
 /**
@@ -80,7 +86,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('hosts', HostController::class);
     Route::resource('schools', SchoolController::class);
     Route::resource('users', UserController::class);
+    Route::get('/schools/{id}/apartments', [SchoolController::class, 'getNearbyApartments']);
+    Route::get('/distances', [SchoolController::class, 'showDistances']);
 });
+
+Route::get('admin/map', [MapController::class, 'index']);
 
 
 require __DIR__.'/auth.php';

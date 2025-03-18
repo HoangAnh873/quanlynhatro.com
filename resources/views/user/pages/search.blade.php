@@ -18,6 +18,7 @@
                         <th>Số người tối đa</th>
                         <th>Khu trọ</th>
                         <th>Địa chỉ</th>
+                        <th>Khoảng cách (km)</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -29,10 +30,13 @@
                             <td>{{ $room->roomType->max_occupants }}</td>
                             <td>{{ $room->apartment->name }}</td>
                             <td>{{ $room->apartment->location }}</td>
+                            <td>{{ number_format($room->distance, 2) }} km</td>
                             <td>
-                                <a href="{{ route('user.rentals.index', $room->id) }}" class="btn btn-sm btn-primary">Lập phiếu thuê</a>
-                                <a href="#" class="btn btn-sm btn-warning">xem chi tiết</a>
-                                {{-- <a href="{{ route('user.rental.create', $room->id) }}" class="btn btn-sm btn-primary">Lập phiếu thuê</a> --}}
+                                <a href="{{ route('user.rentals.index', ['id' => $room->id, 'check_in' => $checkIn->format('Y-m-d'), 'check_out' => $checkOut->format('Y-m-d')]) }}" 
+                                    class="btn btn-sm btn-primary">
+                                     Lập phiếu thuê
+                                 </a>
+                                <a href="#" class="btn btn-sm btn-warning">Xem chi tiết</a>
                             </td>
                         </tr>
                     @endforeach

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Apartment;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Host;
+use App\Models\Distance;
+use App\Models\School;
 
 class ApartmentController extends Controller
 {
@@ -29,22 +31,50 @@ class ApartmentController extends Controller
     }
 
     // Lưu khu trọ mới vào database
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'location' => 'required|string',
+    //         'GPS_Latitude' => 'nullable|numeric',
+    //         'GPS_Longitude' => 'nullable|numeric',
+    //     ]);
+
+    //     // Lấy host_id
+    //     $host = Host::where('user_id', Auth::id())->first();
+    //     if (!$host) {
+    //         return back()->withErrors(['error' => 'Không tìm thấy tài khoản chủ trọ.']);
+    //     }
+
+    //     Apartment::create([
+    //         'host_id' => $host->id,
+    //         'name' => $request->name,
+    //         'location' => $request->location,
+    //         'GPS_Latitude' => $request->GPS_Latitude,
+    //         'GPS_Longitude' => $request->GPS_Longitude,
+    //     ]);
+
+    //     return redirect()->route('host.apartments.index')->with('success', 'Khu trọ đã được thêm!');
+    // }
+
     public function store(Request $request)
     {
-        $request->validate([
+        // 1️⃣ Xác thực dữ liệu đầu vào
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string',
-            'GPS_Latitude' => 'nullable|numeric',
-            'GPS_Longitude' => 'nullable|numeric',
+            'GPS_Latitude' => 'required|numeric', // Bắt buộc có tọa độ để tính khoảng cách
+            'GPS_Longitude' => 'required|numeric',
         ]);
 
-        // Lấy host_id
+        // 2️⃣ Lấy thông tin chủ trọ (host_id)
         $host = Host::where('user_id', Auth::id())->first();
         if (!$host) {
             return back()->withErrors(['error' => 'Không tìm thấy tài khoản chủ trọ.']);
         }
 
-        Apartment::create([
+        // 3️⃣ Tạo mới khu trọ
+        $apartment = Apartment::create([
             'host_id' => $host->id,
             'name' => $request->name,
             'location' => $request->location,
@@ -52,7 +82,28 @@ class ApartmentController extends Controller
             'GPS_Longitude' => $request->GPS_Longitude,
         ]);
 
-        return redirect()->route('host.apartments.index')->with('success', 'Khu trọ đã được thêm!');
+        // 4️⃣ Lấy danh sách tất cả các trường học
+        $schools = School::all();
+
+        // 5️⃣ Tính khoảng cách từ khu trọ mới đến từng trường học và lưu vào bảng distances
+        foreach ($schools as $school) {
+            $distance = Distance::calculateDistance(
+                $apartment->GPS_Latitude, 
+                $apartment->GPS_Longitude, 
+                $school->GPS_Latitude, 
+                $school->GPS_Longitude
+            );
+
+            // 6️⃣ Lưu vào bảng distances
+            Distance::create([
+                'apartment_id' => $apartment->id,
+                'school_id' => $school->id,
+                'distance' => $distance
+            ]);
+        }
+
+        // 7️⃣ Chuyển hướng về danh sách khu trọ với thông báo thành công
+        return redirect()->route('host.apartments.index')->with('success', 'Khu trọ đã được thêm và khoảng cách đến các trường đã được tính toán!');
     }
 
     // Hiển thị form chỉnh sửa khu trọ
@@ -141,4 +192,14 @@ class ApartmentController extends Controller
         return view('user.apartments.show', compact('apartment'));
     }
 
+    public function getNearbySchools($id)
+    {
+        $schools = Distance::where('apartment_id', $id)
+            ->join('schools', 'distances.school_id', '=', 'schools.id')
+            ->orderBy('distance', 'ASC')
+            ->select('schools.name', 'distances.distance')
+            ->get();
+
+        return response()->json($schools);
+    }
 }

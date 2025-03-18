@@ -43,7 +43,12 @@ class AppServiceProvider extends ServiceProvider
                             'icon' => 'fas fa-school',
                         ],
                         [
-                            'text' => 'Quản lý bản Đồ',
+                            'text' => 'Quản lý khoảng cách',
+                            'url'  => 'admin/distances',
+                            'icon' => 'fas fa-route',
+                        ],
+                        [
+                            'text' => 'Bản đồ Cần Thơ',
                             'url'  => url('admin/map'),
                             'icon' => 'fas fa-map-marked-alt',
                         ],
