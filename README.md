@@ -15,7 +15,7 @@ Cơ sở dữ liệu: MySQL
 Dành cho Quản Trị Viên (Admin)
 Quản lý toàn bộ hệ thống: tài khoản, khu trọ, hợp đồng, thanh toán, báo cáo…
 
-Dành cho Chủ Nhà Trọ
+Dành cho Chủ Nhà Trọ (Host)
 Quản lý phòng: Thêm, sửa, xóa thông tin phòng trọ.
 
 Quản lý hợp đồng thuê và theo dõi thanh toán.
@@ -77,34 +77,32 @@ Copy
 Edit
 php artisan serve
 6. Tài Khoản Mặc Định (Seeder)
+Chạy lệnh sau để tạo tài khoản mặc định cho Admin và Chủ Nhà Trọ:
+
 bash
 Copy
 Edit
 php artisan db:seed --class=UserSeeder
+Sau khi seed, sẽ có:
 
-Sau khi chạy lệnh trên thì mặc định có 1 tài khoản chủ trọ và 1 tài khoản admin
-
-Tài khoản chủ trọ (host):
+Tài khoản Chủ Nhà Trọ (Host):
 
 Email: host@example.com
 
 Mật khẩu: 123456
 
-
-Tài khoản admin (Quản trị viên):
+Tài khoản Admin (Quản Trị Viên):
 
 Email: admin@example.com
 
 Mật khẩu: 123456
 
-
 7. Truy Cập Hệ Thống
 Trang chủ: Truy cập http://127.0.0.1:8000/
 
-Trang đăng nhập Admin: có thể đăng nhập từ trang đăng nhập chủ trọ
+Trang đăng nhập Admin: Có thể đăng nhập từ trang đăng nhập của chủ nhà trọ.
 
 8. Liên Hệ
 Nếu có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ qua email: hoanganhh080703@gmail.com
 
 ✨ Cảm ơn bạn đã sử dụng hệ thống! ✨
-
