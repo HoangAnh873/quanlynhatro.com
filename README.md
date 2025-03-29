@@ -1,66 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Hệ Thống Quản Lý Nhà Trọ
+1. Giới Thiệu
+Đây là dự án cá nhân phát triển độc lập nhằm hỗ trợ chủ nhà trọ quản lý phòng, hợp đồng thuê và thanh toán một cách hiệu quả. Hệ thống cung cấp giao diện quản lý thân thiện và tích hợp bản đồ OpenStreetMap, giúp người dùng dễ dàng tìm kiếm khu trọ theo tên, chủ trọ, địa chỉ và các trường học lân cận (dữ liệu trường học được lấy từ cơ sở dữ liệu).
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+2. Công Nghệ Sử Dụng
+Backend: Laravel (PHP)
 
-## About Laravel
+Frontend: Blade Template, HTML, CSS, JavaScript, Bootstrap
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Bản đồ: OpenStreetMap
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Cơ sở dữ liệu: MySQL
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+3. Chức Năng Chính
+Dành cho Quản Trị Viên (Admin)
+Quản lý toàn bộ hệ thống: tài khoản, khu trọ, hợp đồng, thanh toán, báo cáo…
 
-## Learning Laravel
+Dành cho Chủ Nhà Trọ
+Quản lý phòng: Thêm, sửa, xóa thông tin phòng trọ.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Quản lý hợp đồng thuê và theo dõi thanh toán.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Xem báo cáo và thống kê tình trạng hoạt động của khu trọ.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Dành cho Người Dùng Bình Thường
+Tìm kiếm khu trọ theo tên khu trọ, tên chủ trọ, địa chỉ và các trường học lân cận.
 
-## Laravel Sponsors
+Xem thông tin chi tiết khu trọ và định vị trên bản đồ.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Đặt phòng trực tuyến và nhận email xác nhận đơn hàng.
 
-### Premium Partners
+4. Giao Diện Người Dùng
+Hệ thống cung cấp 3 giao diện riêng biệt:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Admin: Quản lý hệ thống tổng thể.
 
-## Contributing
+Chủ Nhà Trọ: Giao diện dành cho chủ nhà trọ để quản lý phòng và hợp đồng.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Người Dùng: Giao diện thân thiện hỗ trợ tìm kiếm và đặt phòng.
 
-## Code of Conduct
+5. Hướng Dẫn Cài Đặt & Chạy Dự Án
+5.1. Clone Repository về máy
+bash
+Copy
+Edit
+git clone https://github.com/HoangAnh873/quanlynhatro.git
+cd quanlynhatro
+5.2. Cài Đặt Dependencies
+bash
+Copy
+Edit
+composer install
+npm install
+5.3. Cấu Hình Môi Trường
+Copy file .env.example thành .env:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+bash
+Copy
+Edit
+cp .env.example .env
+Chỉnh sửa thông tin kết nối database trong file .env.
 
-## Security Vulnerabilities
+Tạo APP_KEY bằng lệnh:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+bash
+Copy
+Edit
+php artisan key:generate
+5.4. Tạo Cơ Sở Dữ Liệu
+bash
+Copy
+Edit
+php artisan migrate
+5.5. Chạy Server
+bash
+Copy
+Edit
+php artisan serve
+6. Tài Khoản Mặc Định (Seeder)
+bash
+Copy
+Edit
+php artisan db:seed --class=UserSeeder
 
-## License
+Sau khi chạy lệnh trên thì mặc định có 1 tài khoản chủ trọ và 1 tài khoản admin
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Tài khoản chủ trọ (host):
+
+Email: host@example.com
+
+Mật khẩu: 123456
+
+
+Tài khoản admin (Quản trị viên):
+
+Email: admin@example.com
+
+Mật khẩu: 123456
+
+
+7. Truy Cập Hệ Thống
+Trang chủ: Truy cập http://127.0.0.1:8000/
+
+Trang đăng nhập Admin: có thể đăng nhập từ trang đăng nhập chủ trọ
+
+8. Liên Hệ
+Nếu có bất kỳ câu hỏi hoặc cần hỗ trợ, vui lòng liên hệ qua email: hoanganhh080703@gmail.com
+
+✨ Cảm ơn bạn đã sử dụng hệ thống! ✨
+
