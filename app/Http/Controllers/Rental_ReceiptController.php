@@ -18,7 +18,7 @@ class Rental_ReceiptController extends Controller
         // Lấy ngày bắt đầu và ngày kết thúc từ URL
         $checkIn = $request->query('check_in');
         $checkOut = $request->query('check_out');
-    
+
         return view('user.pages.rentals', compact('room', 'checkIn', 'checkOut'));
     }
 

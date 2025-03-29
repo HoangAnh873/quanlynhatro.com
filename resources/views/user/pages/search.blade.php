@@ -1,7 +1,7 @@
 @extends('user.layouts.master')
 
 @section('title', 'Kết quả tìm kiếm phòng')
-
+{{-- {{ dd($checkIn, $checkOut) }} --}}
 @section('content')
 <div class="container mt-4">
     <h2 class="mb-4 text-center">Kết quả tìm kiếm phòng trọ</h2>
@@ -32,10 +32,13 @@
                             <td>{{ $room->apartment->location }}</td>
                             <td>{{ number_format($room->distance, 2) }} km</td>
                             <td>
-                                <a href="{{ route('user.rentals.index', ['id' => $room->id, 'check_in' => $checkIn->format('Y-m-d'), 'check_out' => $checkOut->format('Y-m-d')]) }}" 
-                                    class="btn btn-sm btn-primary">
-                                     Lập phiếu thuê
-                                 </a>
+                                <a href="{{ route('user.rentals.index', [
+                                    'id' => $room->id, 
+                                    'check_in' => $checkIn ? $checkIn->toDateString() : null, 
+                                    'check_out' => $checkOut ? $checkOut->toDateString() : null
+                                ]) }}" class="btn btn-sm btn-primary">
+                                    Lập phiếu thuê
+                                </a>
                                 <a href="#" class="btn btn-sm btn-warning">Xem chi tiết</a>
                             </td>
                         </tr>

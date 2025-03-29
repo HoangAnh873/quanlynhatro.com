@@ -30,33 +30,6 @@ class ApartmentController extends Controller
         return view('hosts.apartments.create');
     }
 
-    // Lưu khu trọ mới vào database
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'location' => 'required|string',
-    //         'GPS_Latitude' => 'nullable|numeric',
-    //         'GPS_Longitude' => 'nullable|numeric',
-    //     ]);
-
-    //     // Lấy host_id
-    //     $host = Host::where('user_id', Auth::id())->first();
-    //     if (!$host) {
-    //         return back()->withErrors(['error' => 'Không tìm thấy tài khoản chủ trọ.']);
-    //     }
-
-    //     Apartment::create([
-    //         'host_id' => $host->id,
-    //         'name' => $request->name,
-    //         'location' => $request->location,
-    //         'GPS_Latitude' => $request->GPS_Latitude,
-    //         'GPS_Longitude' => $request->GPS_Longitude,
-    //     ]);
-
-    //     return redirect()->route('host.apartments.index')->with('success', 'Khu trọ đã được thêm!');
-    // }
-
     public function store(Request $request)
     {
         // 1️⃣ Xác thực dữ liệu đầu vào
@@ -187,9 +160,27 @@ class ApartmentController extends Controller
         return view('user.pages.rooms', compact('apartments'));
     }
 
+
+
     public function show(Apartment $apartment)
     {
         return view('user.apartments.show', compact('apartment'));
+    }
+
+    public function showRoom(Apartment $apartment)
+    {
+        // Ngày nhận phòng là hôm nay
+        $checkIn = now()->toDateString(); 
+    
+        // Ngày kết thúc là 3 tháng sau
+        $checkOut = now()->addMonths(3)->toDateString(); 
+    
+        $rooms = $apartment->rooms()->whereDoesntHave('contracts')
+            ->orWhereHas('contracts', function ($query) {
+                $query->where('end_date', '<', now()); // Hợp đồng đã kết thúc
+            })->get();
+
+        return view('user.pages.searchRoom', compact('rooms', 'checkIn', 'checkOut'));
     }
 
     public function getNearbySchools($id)

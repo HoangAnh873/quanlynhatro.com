@@ -257,7 +257,6 @@ class RoomController extends Controller
             }
         }
     
-        // dd($request->all());
         // Lấy danh sách phòng hợp lệ
         $rooms = $query->with(['apartment'])->get();
 
@@ -288,7 +287,7 @@ class RoomController extends Controller
             // Sắp xếp theo khoảng cách tăng dần
             $rooms = $rooms->sortBy('distance');
         }
-
+        // dd($checkIn, $checkOut);
         return view('user.pages.search', compact('rooms', 'checkIn', 'checkOut'));
     }
 

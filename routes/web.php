@@ -25,6 +25,7 @@ Route::get('/', function () {
 Route::get('/apartments/list', [ApartmentController::class, 'list'])->name('user.apartments.list');
 Route::get('/apartments/search', [ApartmentController::class, 'search'])->name('user.apartments.search');
 Route::get('/apartments/{apartment}', [ApartmentController::class, 'show'])->name('user.apartments.show');
+Route::get('/apartments/rooms/{apartment}', [ApartmentController::class, 'showRoom'])->name('user.apartments.showRoom');
 
 Route::get('/rooms/search', [RoomController::class, 'search'])->name('user.rooms.search');
 
