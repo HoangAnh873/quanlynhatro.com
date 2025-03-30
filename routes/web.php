@@ -26,11 +26,15 @@ Route::get('/apartments/list', [ApartmentController::class, 'list'])->name('user
 Route::get('/apartments/search', [ApartmentController::class, 'search'])->name('user.apartments.search');
 Route::get('/apartments/{apartment}', [ApartmentController::class, 'show'])->name('user.apartments.show');
 Route::get('/apartments/rooms/{apartment}', [ApartmentController::class, 'showRoom'])->name('user.apartments.showRoom');
+Route::get('/apartments/distance', [ApartmentController::class, 'getDistance'])->name('apartments.distance');
+
+Route::get('/school/search', [SchoolController::class, 'search'])->name('school.search');
 
 Route::get('/rooms/search', [RoomController::class, 'search'])->name('user.rooms.search');
-
 Route::get('/rooms/rentals/{id}', [Rental_ReceiptController::class, 'index'])->name('user.rentals.index');
 Route::post('/rooms/rentals', [Rental_ReceiptController::class, 'store'])->name('user.rentals.store');
+
+
 
 Route::get('/contact', function () {
     return view('user.pages.contact');
@@ -50,7 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//Route cho host
 //Route cho host
 Route::middleware(['auth', \App\Http\Middleware\CheckRoomAvailability::class])
     ->prefix('host')

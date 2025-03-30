@@ -21,29 +21,6 @@ class SchoolController extends Controller
         return view('schools.create');
     }
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'location' => 'nullable|string|max:255',
-    //         'GPS_Latitude' => 'nullable|numeric',
-    //         'GPS_Longitude' => 'nullable|numeric',
-    //         'icon' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
-    //     ]);
-
-    //     // Xử lý upload icon nếu có
-    //     if ($request->hasFile('icon')) {
-    //         $iconName = time() . '.' . $request->file('icon')->getClientOriginalExtension();
-    //         $request->file('icon')->move(public_path('img/icons'), $iconName);
-    //         $data['icon'] = $iconName;
-    //     }
-
-    //     // Tạo mới trường học
-    //     School::create($data);
-
-    //     return redirect()->route('schools.index')->with('success', 'Thêm trường học thành công!');
-    // }
-
     public function store(Request $request)
     {
         // 1️⃣ Xác thực dữ liệu đầu vào
@@ -121,8 +98,6 @@ class SchoolController extends Controller
         return redirect()->route('schools.index')->with('success', 'Cập nhật trường học thành công!');
     }
     
-    
-
     public function destroy(School $school)
     {
         $school->delete();
@@ -142,15 +117,43 @@ class SchoolController extends Controller
     }
 
     public function showDistances()
-{
-    $distances = Distance::join('schools', 'distances.school_id', '=', 'schools.id')
-        ->join('apartments', 'distances.apartment_id', '=', 'apartments.id')
-        ->select('schools.name as school_name', 'apartments.name as apartment_name', 'distances.distance')
-        ->orderBy('distances.distance', 'ASC')
-        ->get();
+    {
+        $distances = Distance::join('schools', 'distances.school_id', '=', 'schools.id')
+            ->join('apartments', 'distances.apartment_id', '=', 'apartments.id')
+            ->select('schools.name as school_name', 'apartments.name as apartment_name', 'distances.distance')
+            ->orderBy('distances.distance', 'ASC')
+            ->get();
 
-    $schools = School::all(); // Lấy danh sách tất cả trường học
+        $schools = School::all(); // Lấy danh sách tất cả trường học
 
-    return view('distances.index', compact('distances', 'schools'));
-}
+        return view('distances.index', compact('distances', 'schools'));
+    }
+
+    public function search(Request $request)
+    {
+        // Lấy tên trường từ input tìm kiếm
+        $schoolName = $request->input('search_location');
+        $radius = $request->input('radius');
+
+        // Tìm trường học theo tên
+        $school = School::where('name', 'like', '%' . $schoolName . '%')->first();
+
+        if (!$school) {
+            return response()->json(['status' => 'error', 'message' => 'Không tìm thấy trường học.']);
+        }
+
+        // Lấy danh sách apartment_id từ bảng distances với distance <= radius
+        $apartments = Distance::where('school_id', $school->id)
+                            ->where('distance', '<=', $radius)
+                            ->pluck('apartment_id');
+
+        // Lấy thông tin chi tiết của các khu trọ
+        $apartmentDetails = Apartment::whereIn('id', $apartments)->get();
+
+        return response()->json([
+            'status' => 'success',
+            'apartments' => $apartmentDetails,
+            'school' => $school
+        ]);
+    }
 }

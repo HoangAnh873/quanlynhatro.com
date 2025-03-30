@@ -289,36 +289,40 @@
     <!-- Tải Mapbox Directions Plugin -->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             console.log("DOM loaded, initializing map");
             initializeMap();
         });
 
+
         let map, directions;
         let userLocation = null;
         let radiusCircle = null;
         let markers = []; // Mảng để lưu trữ tất cả các marker
+
 
         // Hàm tính khoảng cách giữa hai điểm theo công thức Haversine (đơn vị: km)
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Bán kính Trái Đất (km)
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = 
+            const a =
                 Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
                 Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             const distance = R * c; // Khoảng cách (km)
             return distance;
         }
-
+       
         // Hàm xóa tất cả marker trên bản đồ
         function removeAllMarkers() {
             markers.forEach(marker => marker.remove());
             markers = [];
         }
+
 
         // Hàm thêm marker cho vị trí tìm kiếm
         function addSearchLocationMarker(lat, lng) {
@@ -331,17 +335,21 @@
             markers.push(marker);
         }
 
+
         // Hàm lọc các khu trọ trong bán kính cho trước
         function filterApartmentsByRadius(centerLat, centerLng, radius) {
             const apartmentItems = document.querySelectorAll('.apartment-item');
             let visibleCount = 0;
 
+
             apartmentItems.forEach(function(apartment) {
                 const lat = parseFloat(apartment.dataset.lat);
                 const lng = parseFloat(apartment.dataset.lng);
 
+
                 if (!isNaN(lat) && !isNaN(lng)) {
                     const distance = calculateDistance(centerLat, centerLng, lat, lng);
+
 
                     // Hiển thị khu trọ nếu nằm trong bán kính
                     if (distance <= radius) {
@@ -353,8 +361,16 @@
                 }
             });
 
+
             return visibleCount;
         }
+
+
+
+
+       
+       
+
 
         function initializeMap() {
             if (typeof mapboxgl === 'undefined') {
@@ -366,13 +382,16 @@
                 return;
             }
 
+
             try {
                 console.log('Đang khởi tạo Mapbox với token');
                 mapboxgl.accessToken = 'pk.eyJ1IjoiaG9hbmdhbmhoaCIsImEiOiJjbTg2NXlxbXYwMWRzMmpxeHZxODJ0b2Q1In0.37CjmObFMH_1B04-QE6MtQ';
 
+
                 let centerLng = 105.7469;
                 let centerLat = 10.0452;
                 let defaultZoom = 13;
+
 
                 const apartmentItems = document.querySelectorAll('.apartment-item');
                 if (apartmentItems.length > 0) {
@@ -380,11 +399,13 @@
                     const lat = parseFloat(firstApartment.dataset.lat);
                     const lng = parseFloat(firstApartment.dataset.lng);
 
+
                     if (!isNaN(lat) && !isNaN(lng)) {
                         centerLat = lat;
                         centerLng = lng;
                     }
                 }
+
 
                 map = new mapboxgl.Map({
                     container: 'apartmentMap',
@@ -392,6 +413,7 @@
                     center: [centerLng, centerLat],
                     zoom: defaultZoom
                 });
+
 
                 directions = new MapboxDirections({
                     accessToken: mapboxgl.accessToken,
@@ -410,11 +432,14 @@
                     flyTo: true
                 });
 
+
                 document.getElementById('directions-container').appendChild(
                     directions.onAdd(map)
                 );
 
+
                 map.addControl(new mapboxgl.NavigationControl());
+
 
                 const geolocateControl = new mapboxgl.GeolocateControl({
                     positionOptions: {
@@ -424,7 +449,9 @@
                     showUserHeading: true
                 });
 
+
                 map.addControl(geolocateControl);
+
 
                 geolocateControl.on('geolocate', function(e) {
                     userLocation = {
@@ -434,22 +461,27 @@
                     console.log('User location:', userLocation);
                 });
 
+
                 map.on('load', function() {
                     console.log('Map has loaded successfully');
+
 
                     apartmentItems.forEach(function(apartment) {
                         const lat = parseFloat(apartment.dataset.lat);
                         const lng = parseFloat(apartment.dataset.lng);
                         const id = apartment.dataset.id;
 
+
                         if (!isNaN(lat) && !isNaN(lng)) {
                             const el = document.createElement('div');
                             el.className = 'marker';
+
 
                             const apartmentName = apartment.querySelector('.r-title').textContent;
                             const apartmentPrice = apartment.querySelector('.room-price h5').textContent;
                             const apartmentLocation = apartment.querySelector('.properties-location').textContent.trim();
                             const apartmentImg = apartment.querySelector('.property-pic img').getAttribute('src');
+
 
                             const popupContent = `
                                 <div class="apartment-popup">
@@ -464,8 +496,10 @@
                                 </div>
                             `;
 
+
                             const popup = new mapboxgl.Popup({ offset: 25 })
                                 .setHTML(popupContent);
+
 
                             const marker = new mapboxgl.Marker(el)
                                 .setLngLat([lng, lat])
@@ -475,6 +509,7 @@
                         }
                     });
 
+
                     if (apartmentItems.length === 0) {
                         const noApartmentsPopup = new mapboxgl.Popup({ closeOnClick: false })
                             .setLngLat([centerLng, centerLat])
@@ -482,27 +517,33 @@
                             .addTo(map);
                     }
 
+
                     const urlParams = new URLSearchParams(window.location.search);
                     const hostNameQuery = urlParams.get('host_name');
+
 
                     if (hostNameQuery) {
                         console.log('Tìm kiếm theo chủ trọ/khu trọ:', hostNameQuery);
                         filterApartmentsByName(hostNameQuery);
                     }
 
+
                     function filterApartmentsByName(searchQuery) {
                         searchQuery = searchQuery.toLowerCase().trim();
                         let visibleCount = 0;
                         const bounds = new mapboxgl.LngLatBounds();
 
+
                         apartmentItems.forEach(function(apartment) {
                             const apartmentName = apartment.querySelector('.r-title')?.textContent.toLowerCase() || '';
                             const hostName = apartment.querySelector('.properties-owner')?.textContent.toLowerCase() || '';
+
 
                             if (apartmentName.includes(searchQuery) || hostName.includes(searchQuery)) {
                                 apartment.style.display = '';
                                 const lat = parseFloat(apartment.dataset.lat);
                                 const lng = parseFloat(apartment.dataset.lng);
+
 
                                 if (!isNaN(lat) && !isNaN(lng)) {
                                     bounds.extend([lng, lat]);
@@ -512,6 +553,7 @@
                                 apartment.style.display = 'none';
                             }
                         });
+
 
                         if (visibleCount > 0) {
                             map.fitBounds(bounds, {
@@ -524,6 +566,7 @@
                         }
                     }
 
+
                     function showFilterResultMessage(message) {
                         let messageElement = document.getElementById('filter-result-message');
                         if (!messageElement) {
@@ -534,6 +577,7 @@
                             mapContainer.insertBefore(messageElement, mapContainer.firstChild);
                         }
 
+
                         messageElement.textContent = message;
                         messageElement.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
                         messageElement.style.color = 'white';
@@ -541,6 +585,7 @@
                         messageElement.style.borderRadius = '5px';
                         messageElement.style.margin = '10px 0';
                         messageElement.style.fontWeight = 'bold';
+
 
                         setTimeout(() => {
                             if (messageElement) {
@@ -555,8 +600,10 @@
                         }, 5000);
                     }
 
+
                     if (urlParams.has('search_location') || urlParams.has('host_name') || urlParams.has('radius')) {
                         console.log('Tìm kiếm thành công, hiển thị kết quả trên bản đồ');
+
 
                         if (apartmentItems.length > 0) {
                             const bounds = new mapboxgl.LngLatBounds();
@@ -573,9 +620,11 @@
                             });
                         }
 
+
                         if (urlParams.has('search_location') && urlParams.has('radius')) {
                             const address = urlParams.get('search_location');
                             const radius = parseFloat(urlParams.get('radius'));
+
 
                             fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}&country=VN&limit=1&types=address,poi`)
                                 .then(response => response.json())
@@ -593,14 +642,16 @@
                     }
                 });
 
+
                 document.addEventListener('click', function(e) {
-                    if (e.target.classList.contains('directions-button') || 
+                    if (e.target.classList.contains('directions-button') ||
                         e.target.parentElement.classList.contains('directions-button')) {
-                        const button = e.target.classList.contains('directions-button') ? 
+                        const button = e.target.classList.contains('directions-button') ?
                             e.target : e.target.parentElement;
                         const lat = parseFloat(button.dataset.lat);
                         const lng = parseFloat(button.dataset.lng);
                         const name = button.dataset.name;
+
 
                         if (!isNaN(lat) && !isNaN(lng)) {
                             showDirections(lat, lng, name);
@@ -608,53 +659,61 @@
                     }
                 });
 
+
                 document.getElementById('close-directions').addEventListener('click', function() {
                     hideDirections();
                 });
 
-                apartmentItems.forEach(function(apartment) {
-                    const directionsButton = apartment.querySelector('.directions-button');
-                    if (directionsButton) {
-                        directionsButton.addEventListener('click', function() {
-                            const lat = parseFloat(this.dataset.lat);
-                            const lng = parseFloat(this.dataset.lng);
-                            const name = this.dataset.name;
 
-                            if (!isNaN(lat) && !isNaN(lng)) {
-                                showDirections(lat, lng, name);
+                    apartmentItems.forEach(function(apartment) {
+                        const directionsButton = apartment.querySelector('.directions-button');
+                        if (directionsButton) {
+                            directionsButton.addEventListener('click', function() {
+                                const lat = parseFloat(this.dataset.lat);
+                                const lng = parseFloat(this.dataset.lng);
+                                const name = this.dataset.name;
+
+
+                                if (!isNaN(lat) && !isNaN(lng)) {
+                                    showDirections(lat, lng, name);
+                                }
+                            });
+                        }
+
+
+                        apartment.addEventListener('click', function(e) {
+                            if (!e.target.classList.contains('view-details') &&
+                                !e.target.classList.contains('directions-button') &&
+                                !e.target.parentElement.classList.contains('directions-button')) {
+                                const lat = parseFloat(this.dataset.lat);
+                                const lng = parseFloat(this.dataset.lng);
+
+
+                                if (!isNaN(lat) && !isNaN(lng)) {
+                                    map.flyTo({
+                                        center: [lng, lat],
+                                        zoom: 15,
+                                        essential: true
+                                    });
+                                }
                             }
                         });
-                    }
-
-                    apartment.addEventListener('click', function(e) {
-                        if (!e.target.classList.contains('view-details') && 
-                            !e.target.classList.contains('directions-button') &&
-                            !e.target.parentElement.classList.contains('directions-button')) {
-                            const lat = parseFloat(this.dataset.lat);
-                            const lng = parseFloat(this.dataset.lng);
-
-                            if (!isNaN(lat) && !isNaN(lng)) {
-                                map.flyTo({
-                                    center: [lng, lat],
-                                    zoom: 15,
-                                    essential: true
-                                });
-                            }
-                        }
                     });
-                });
+
 
                 map.on('error', function(e) {
                     console.error('Map error:', e);
                 });
 
+
                 document.querySelector('.sidebar-search').addEventListener('submit', function(e) {
                     e.preventDefault();
+
 
                     const hostName = document.getElementById('search-host').value.trim();
                     const searchLocation = document.getElementById('search-location').value.trim();
                     const radius = parseFloat(document.getElementById('search-radius').value);
-
+                   
                     if (searchLocation === '') {
                         if (userLocation) {
                             searchByCurrentLocation(hostName, radius);
@@ -674,22 +733,28 @@
                             );
                         }
                     } else {
-                        searchByAddress(searchLocation, hostName, radius);
+                        //searchByAddress(searchLocation, hostName, radius);
+                        searchSchool(searchLocation,hostName, radius)
                     }
                 });
+
 
                 // Hàm tìm kiếm theo vị trí hiện tại
                 function searchByCurrentLocation(hostName, radius) {
                     console.log('Tìm kiếm với vị trí hiện tại, bán kính:', radius, 'km');
 
+
                     removeAllMarkers(); // Xóa tất cả marker cũ
                     addSearchLocationMarker(userLocation.lat, userLocation.lng); // Thêm marker vị trí tìm kiếm
 
+
                     const visibleCount = filterApartmentsByRadius(userLocation.lat, userLocation.lng, radius);
+
 
                     if (hostName) {
                         filterApartmentsByName(hostName);
                     }
+
 
                     map.flyTo({
                         center: [userLocation.lng, userLocation.lat],
@@ -697,8 +762,10 @@
                         essential: true
                     });
 
+
                     // showSearchResults(visibleCount, radius);
                     drawRadiusCircle(userLocation.lat, userLocation.lng, radius);
+
 
                     // Thêm lại marker cho các khu trọ hiển thị
                     const visibleApartments = document.querySelectorAll('.apartment-item[style*="display: block"]');
@@ -707,14 +774,17 @@
                         const lng = parseFloat(apartment.dataset.lng);
                         const id = apartment.dataset.id;
 
+
                         if (!isNaN(lat) && !isNaN(lng)) {
                             const el = document.createElement('div');
                             el.className = 'marker';
+
 
                             const apartmentName = apartment.querySelector('.r-title').textContent;
                             const apartmentPrice = apartment.querySelector('.room-price h5').textContent;
                             const apartmentLocation = apartment.querySelector('.properties-location').textContent.trim();
                             const apartmentImg = apartment.querySelector('.property-pic img').getAttribute('src');
+
 
                             const popupContent = `
                                 <div class="apartment-popup">
@@ -729,8 +799,10 @@
                                 </div>
                             `;
 
+
                             const popup = new mapboxgl.Popup({ offset: 25 })
                                 .setHTML(popupContent);
+
 
                             const marker = new mapboxgl.Marker(el)
                                 .setLngLat([lng, lat])
@@ -741,9 +813,11 @@
                     });
                 }
 
+
                 // Hàm tìm kiếm theo địa chỉ đã nhập (đã được chỉnh sửa)
                 function searchByAddress(address, hostName, radius) {
                     console.log('Tìm kiếm với địa chỉ:', address, 'bán kính:', radius, 'km');
+
 
                     // Sử dụng Mapbox Geocoding API với types=address,poi để lấy địa chỉ cụ thể
                     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}&country=VN&limit=1&types=address,poi`)
@@ -755,14 +829,18 @@
                                 const searchLng = coordinates[0];
                                 const searchLat = coordinates[1];
 
+
                                 removeAllMarkers(); // Xóa tất cả marker cũ
                                 addSearchLocationMarker(searchLat, searchLng); // Thêm marker vị trí tìm kiếm
 
+
                                 const visibleCount = filterApartmentsByRadius(searchLat, searchLng, radius);
+
 
                                 if (hostName) {
                                     filterApartmentsByName(hostName);
                                 }
+
 
                                 map.flyTo({
                                     center: [searchLng, searchLat],
@@ -770,8 +848,10 @@
                                     essential: true
                                 });
 
+
                                 // showSearchResults(visibleCount, radius);
                                 drawRadiusCircle(searchLat, searchLng, radius);
+
 
                                 // Thêm lại marker cho các khu trọ hiển thị
                                 const visibleApartments = document.querySelectorAll('.apartment-item[style*="display: block"]');
@@ -780,14 +860,17 @@
                                     const lng = parseFloat(apartment.dataset.lng);
                                     const id = apartment.dataset.id;
 
+
                                     if (!isNaN(lat) && !isNaN(lng)) {
                                         const el = document.createElement('div');
                                         el.className = 'marker';
+
 
                                         const apartmentName = apartment.querySelector('.r-title').textContent;
                                         const apartmentPrice = apartment.querySelector('.room-price h5').textContent;
                                         const apartmentLocation = apartment.querySelector('.properties-location').textContent.trim();
                                         const apartmentImg = apartment.querySelector('.property-pic img').getAttribute('src');
+
 
                                         const popupContent = `
                                             <div class="apartment-popup">
@@ -802,8 +885,10 @@
                                             </div>
                                         `;
 
+
                                         const popup = new mapboxgl.Popup({ offset: 25 })
                                             .setHTML(popupContent);
+
 
                                         const marker = new mapboxgl.Marker(el)
                                             .setLngLat([lng, lat])
@@ -822,20 +907,24 @@
                         });
                 }
 
+
                 // Hàm lọc khu trọ theo tên
                 function filterApartmentsByName(hostName) {
                     const searchTerm = hostName.toLowerCase();
                     const visibleApartments = document.querySelectorAll('.apartment-item[style*="display: block"]');
 
+
                     visibleApartments.forEach(function(apartment) {
                         const title = apartment.querySelector('.r-title').textContent.toLowerCase();
                         const host = apartment.querySelector('.properties-owner').textContent.toLowerCase();
+
 
                         if (!title.includes(searchTerm) && !host.includes(searchTerm)) {
                             apartment.style.display = 'none';
                         }
                     });
                 }
+
 
                 // Hàm tính mức zoom phù hợp với bán kính
                 function getZoomLevelByRadius(radius) {
@@ -846,6 +935,7 @@
                     if (radius <= 20) return 11;
                     return 10;
                 }
+
 
                 // Hàm hiển thị kết quả tìm kiếm
                 function showSearchResults(count, radius) {
@@ -859,6 +949,7 @@
                     resultElement.textContent = resultMessage;
                 }
 
+
                 // Hàm vẽ vòng tròn bán kính tìm kiếm
                 function drawRadiusCircle(lat, lng, radiusKm) {
                     if (map.getSource('radius-circle')) {
@@ -866,14 +957,17 @@
                         map.removeSource('radius-circle');
                     }
 
+
                     const center = [lng, lat];
                     const options = {steps: 64, units: 'kilometers'};
                     const circle = turf.circle(center, radiusKm, options);
+
 
                     map.addSource('radius-circle', {
                         'type': 'geojson',
                         'data': circle
                     });
+
 
                     map.addLayer({
                         'id': 'radius-circle-layer',
@@ -886,6 +980,108 @@
                         }
                     });
                 }
+ 
+
+
+                function searchSchool(schoolName,hostName, radius) {
+                fetch(`{{ route('school.search') }}?search_location=${encodeURIComponent(schoolName)}&radius=${radius}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const school = data.school;
+                            const apartments = data.apartments;
+                            const longitude = Number(school.GPS_Longitude);
+                            const latitude = Number(school.GPS_Latitude);
+                            schoolLocation = {
+                                lat: Number(school.GPS_Latitude),
+                                lng: Number(school.GPS_Longitude)
+                            };
+
+
+                            removeAllMarkers();
+                         
+                            //Hiển thị marker cho trường học
+                           
+                            const schoolMarker = new mapboxgl.Marker()
+                                .setLngLat([longitude, latitude])
+                                .setPopup(new mapboxgl.Popup().setHTML(`<b>${school.name}</b>`))
+                                .addTo(map);
+                            markers.push(schoolMarker);
+
+
+                            // Di chuyển bản đồ đến vị trí trường học
+                            map.flyTo({
+                                center: [school.GPS_Longitude, school.GPS_Latitude],
+                                zoom: 12
+                            });
+                           
+                            drawRadiusCircle(school.GPS_Latitude, school.GPS_Longitude, radius);
+                            // Lọc và hiển thị các khu trọ trong danh sách
+                            const apartmentItems = document.querySelectorAll('.apartment-item');
+                            apartmentItems.forEach(function(apartment) {
+                                const apartmentId = apartment.dataset.id;
+                                if (apartments.some(apt => apt.id == apartmentId)) {
+                                    apartment.style.display = 'block';
+                                } else {
+                                    apartment.style.display = 'none';
+                                }
+                            });
+                           
+                            if (hostName) {
+                                filterApartmentsByName(hostName);
+                            }
+                            const visibleApartments = Array.from(apartmentItems).filter(apartment => apartment.style.display !== 'none');
+                           
+                            visibleApartments.forEach(function(apartmentElement) {
+                            const apartmentId = apartmentElement.dataset.id;
+                            const apartment = apartments.find(apt => apt.id == apartmentId);
+                            if (apartment) {
+                                const lat = apartment.GPS_Latitude;
+                                const lng = apartment.GPS_Longitude;
+                                const id = apartment.id;
+                               
+                                const el = document.createElement('div');
+                                el.className = 'marker';
+                               
+                                const popupContent = `
+                                    <div class="apartment-popup">
+                                        <img src="${apartment.image}" alt="${apartment.name}" class="apartment-popup-image">
+                                        <div class="apartment-popup-title">${apartment.name}</div>
+                                        <div class="apartment-popup-price">${apartment.minPrice} VNĐ/tháng</div>
+                                        <div class="apartment-popup-address">${apartment.location}</div>
+                                        <a href="${document.location.origin}/user/apartments/${id}" class="apartment-popup-button">Xem chi tiết</a>
+                                        <button class="directions-button" data-lat="${lat}" data-lng="${lng}" data-name="${apartment.name}">
+                                            <i class="fa fa-route"></i> Chỉ đường
+                                        </button>
+                                    </div>
+                                `;
+                               
+                                const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent);
+                                const marker = new mapboxgl.Marker(el)
+                                    .setLngLat([lng, lat])
+                                    .setPopup(popup)
+                                    .addTo(map);
+                                markers.push(marker);
+                            }
+                        });
+                           
+                           
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error searching for school:', error);
+                        alert('Lỗi tìm kiếm trường.');
+                    });
+            }
+
+
+           
+
+
+
+
             } catch (error) {
                 console.error('Error initializing map:', error);
                 const mapElement = document.getElementById('apartmentMap');
@@ -895,16 +1091,35 @@
             }
         }
 
+
+
+
+        let schoolLocation = null;
         function showDirections(destLat, destLng, destName) {
             console.log('Hiển thị chỉ đường đến:', destName, destLat, destLng);
+
+
+            // Hiển thị directions container
             document.getElementById('directions-container').style.display = 'block';
             directions.setDestination([destLng, destLat]);
 
-            if (userLocation) {
+
+            // Kiểm tra nếu có tọa độ trường học
+            if (schoolLocation) {
+                // Nếu có tọa độ trường học, sử dụng trường học làm điểm xuất phát
+                console.log("Sử dụng trường học làm điểm xuất phát");
+                directions.setOrigin([schoolLocation.lng, schoolLocation.lat]);
+            } else if (userLocation) {
+                // Nếu không có trường học, dùng vị trí người dùng làm điểm xuất phát
+                console.log("Sử dụng vị trí người dùng làm điểm xuất phát");
                 directions.setOrigin([userLocation.lng, userLocation.lat]);
             } else {
-                directions.setOrigin('');
-                alert('Vui lòng nhập vị trí xuất phát hoặc cho phép truy cập vị trí của bạn bằng cách nhấn vào nút vị trí trên bản đồ.');
+                // Nếu không có cả vị trí trường và người dùng, yêu cầu người dùng nhập vị trí
+                alert('Vui lòng nhập vị trí xuất phát hoặc cho phép truy cập vị trí của bạn.');
+                directions.setOrigin(''); // Xóa điểm xuất phát nếu không có gì
+
+
+                // Sử dụng Geolocation API để lấy vị trí người dùng nếu chưa có
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
                         userLocation = {
@@ -920,9 +1135,20 @@
             }
         }
 
+
+
+
+
+
         function hideDirections() {
             document.getElementById('directions-container').style.display = 'none';
             directions.removeRoutes();
         }
+
+
+       
+
+
+       
     </script>
 @endsection

@@ -193,4 +193,23 @@ class ApartmentController extends Controller
 
         return response()->json($schools);
     }
+
+    public function getDistance(Request $request)
+    {
+        $apartmentId = $request->query('apartment_id');
+        $schoolName = $request->query('school_name');
+    
+        $school = School::where('name', 'LIKE', "%{$schoolName}%")->first();
+        if (!$school) {
+            return response()->json(['distance' => null]);
+        }
+    
+        $distance = Distance::where('apartment_id', $apartmentId)
+            ->where('school_id', $school->id)
+            ->first();
+    
+        return response()->json([
+            'distance' => $distance ? $distance->distance : null
+        ]);
+    }
 }
