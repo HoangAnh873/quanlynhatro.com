@@ -1,7 +1,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>#</th>
+            <th>STT</th>
             <th>Tên Chủ Trọ</th>
             <th>Số Điện Thoại</th>
             <th>Địa Chỉ</th>

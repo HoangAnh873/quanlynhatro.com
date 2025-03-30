@@ -55,7 +55,7 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: [105.7469, 10.0452],
-            zoom: 11
+            zoom: 12
         });
 
         // Dữ liệu khu trọ từ backend
@@ -142,13 +142,12 @@
                     'fill-color': [
                         'step',
                         ['get', 'count'],
-                        '#FFFBF0',   // 0-5 khu trọ
-                        5, '#FED976', // 5-10 khu trọ
-                        10, '#FD8D3C', // 10-15 khu trọ
-                        15, '#FC4E2A', // 15-20 khu trọ
-                        20, '#E31A1C', // 20-25 khu trọ
-                        25, '#BD0026', // 25-30 khu trọ
-                        30, '#800026'  // 30+ khu trọ
+                        '#FFFBF0',   // 0-2 khu trọ
+                        2, '#FED976', // 2-5 khu trọ
+                        5, '#FD8D3C', // 5-10 khu trọ
+                        10, '#FC4E2A', // 10-20 khu trọ
+                        20, '#E31A1C', // 20+ khu trọ
+                        
                     ],
                     'fill-opacity': 0.7
                 }
@@ -265,13 +264,11 @@
 
             legend.innerHTML = `
                 <h4 style="margin-top: 0; margin-bottom: 8px;">Số lượng khu trọ</h4>
-                <div><i style="background: #FFFBF0; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>0 - 5</div>
-                <div><i style="background: #FED976; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>5 - 10</div>
-                <div><i style="background: #FD8D3C; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>10 - 15</div>
-                <div><i style="background: #FC4E2A; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>15 - 20</div>
-                <div><i style="background: #E31A1C; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>20 - 25</div>
-                <div><i style="background: #BD0026; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>25 - 30</div>
-                <div><i style="background: #800026; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>30+</div>
+                <div><i style="background: #FFFBF0; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>0 - 2</div>
+                <div><i style="background: #FED976; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>2 - 5</div>
+                <div><i style="background: #FD8D3C; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>5 - 10</div>
+                <div><i style="background: #FC4E2A; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>10 - 20</div>
+                <div><i style="background: #E31A1C; width: 18px; height: 18px; float: left; margin-right: 8px; border: 1px solid #ccc;"></i>20+</div>
             `;
 
             map.getContainer().appendChild(legend);

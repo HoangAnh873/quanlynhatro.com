@@ -190,7 +190,7 @@
                             <!-- Ô chọn bán kính tìm kiếm -->
                             <div class="form-group">
                                 <label for="search-radius">
-                                    <i class="fas fa-circle-notch"></i> Bán kính tìm kiếm:
+                                    <i class="fas fa-circle-notch"></i> Phạm vi tìm kiếm:
                                 </label>
                                 <select id="search-radius" name="radius" class="form-control">
                                     <option value="1">1 km</option>

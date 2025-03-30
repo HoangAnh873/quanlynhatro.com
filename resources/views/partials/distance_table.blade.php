@@ -2,7 +2,7 @@
     
     <thead>
         <tr>
-            <th>#</th>
+            <th>STT</th>
             <th>Tên Trường</th>
             <th>Khu trọ</th>
             <th>Khoảng cách</th>
